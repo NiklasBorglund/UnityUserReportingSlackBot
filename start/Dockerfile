@@ -20,6 +20,6 @@ WORKDIR /src
 RUN npm install
 
 # Bundle app source.
-COPY app.js /src
+COPY bugreportersqueezer.js /src
 
-CMD ["node", "slackbot-bugreportsqueezer"]
+CMD ["node", "bugreportersqueezer"]
