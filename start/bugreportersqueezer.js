@@ -26,8 +26,6 @@ async function accessSecretVersion(name) {
  * Asynchronous function to initialize squeezer
  */
 async function squeezerInit () {
-    console.info("INITIALIZING SQEEEZER");
-
     const adapter = new SlackAdapter({
         clientSigningSecret: await accessSecretVersion('client-signing-secret'),
         botToken: await accessSecretVersion('bot-token')
@@ -43,26 +41,24 @@ async function squeezerInit () {
     controller.ready(() =>
     {
         controller.on('bot_message', async(bot, event) => {
-            if(event.attachments !== undefined && event.attachments.length > 0)
-            {
-                console.log("Found attachments!");
-                var attachment = event.attachments[0];
-                if(attachment.author_name === 'Unity User Reporting')
-                {
-                    var channel = 'bugreports';
-                    var fixedTitle = attachment.title;
-                    
-                    if(fixedTitle.includes('[MASTER]'))
-                    {
-                        fixedTitle = fixedTitle.replace('[MASTER]', '');
-                        channel = 'bugreports-master';
+            return new Promise(async(resolve, reject) => {
+                resolve('resolved!');
+                if (event.attachments !== undefined && event.attachments.length > 0) {
+                    var attachment = event.attachments[0];
+                    if (attachment.author_name === 'Unity User Reporting') {
+                        var channel = 'bugreports';
+                        var fixedTitle = attachment.title;
+
+                        if (fixedTitle.includes('[MASTER]')) {
+                            fixedTitle = fixedTitle.replace('[MASTER]', '');
+                            channel = 'bugreports-master';
+                        }
+
+                        var fullSlackMessage = '<' + attachment.title_link + '|' + fixedTitle + '>';
+                        await bot.reply(event, {channel: channel, text: fullSlackMessage, unfurl_links: false});
                     }
-                    
-                    console.log("Found attachment from bug report! Replying...");
-                    var fullSlackMessage = '<' + attachment.title_link + '|' + fixedTitle + '>';
-                    await bot.reply(event, { channel: channel, text: fullSlackMessage, unfurl_links: false });
                 }
-            }
+            });
         });
     })
 }
