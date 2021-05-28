@@ -54,6 +54,7 @@ async function squeezerInit () {
                             channel = 'bugreports-master';
                         }
 
+                        await bot.changeContext(event.reference);
                         var fullSlackMessage = '<' + attachment.title_link + '|' + fixedTitle + '>';
                         await bot.reply(event, {channel: channel, text: fullSlackMessage, unfurl_links: false});
                     }
