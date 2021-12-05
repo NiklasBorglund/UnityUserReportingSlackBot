@@ -42,7 +42,6 @@ async function squeezerInit () {
     {
         controller.on('bot_message', async(bot, event) => {
             bot.httpStatus(200)
-            bot.
             return new Promise(async(resolve, reject) => {
                 resolve('resolved!');
                 if (event.attachments !== undefined && event.attachments.length > 0) {
