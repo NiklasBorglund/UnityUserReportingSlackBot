@@ -42,6 +42,7 @@ async function squeezerInit () {
     {
         controller.on('bot_message', async(bot, event) => {
             bot.httpStatus(200)
+            bot.
             return new Promise(async(resolve, reject) => {
                 resolve('resolved!');
                 if (event.attachments !== undefined && event.attachments.length > 0) {
@@ -77,7 +78,7 @@ async function squeezerInit () {
                             var isCheating = splitTitleWords[5];
                             var titleText = splitTitleWords[6];
 
-                            var strengthString = "Strength " + reportStrengthEmoji + " : " + reportStrengthString;
+                            var strengthString = "Strength: " + reportStrengthString + " " + reportStrengthEmoji;
                             var severityString = "Severity"
                             if(isSure === 'not sure')
                             {
