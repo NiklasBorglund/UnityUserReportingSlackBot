@@ -35,7 +35,15 @@ async function squeezerInit () {
 
     const controller = new Botkit({
         webhook_uri: '/api/messages',
-        adapter: adapter
+        adapter: adapter,
+        webserver_middlewares: [
+            (req, res, next) => {
+                if (req.headers['x-slack-retry-num']) {
+                    res.status(200).send()
+                    return
+                }
+                next()
+            }]
     })
 
     controller.ready(() =>
@@ -77,7 +85,7 @@ async function squeezerInit () {
                             var isCheating = splitTitleWords[5];
                             var titleText = splitTitleWords[6];
 
-                            var strengthString = "Strength: " + reportStrengthString + " " + reportStrengthEmoji;
+                            var strengthString = "Report Strength: " + reportStrengthString + " " + reportStrengthEmoji;
                             var severityString = "Severity"
                             if(isSure === 'not sure')
                             {
